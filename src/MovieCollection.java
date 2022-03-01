@@ -147,6 +147,23 @@ public class MovieCollection
       listToSort.set(possibleIndex, temp);
     }
   }
+
+  private void sortString(ArrayList<String> listToSort)
+  {
+    for (int j = 1; j < listToSort.size(); j++)
+    {
+      String temp = listToSort.get(j);
+      String tempTitle = temp;
+
+      int possibleIndex = j;
+      while (possibleIndex > 0 && tempTitle.compareTo(listToSort.get(possibleIndex - 1)) < 0)
+      {
+        listToSort.set(possibleIndex, listToSort.get(possibleIndex - 1));
+        possibleIndex--;
+      }
+      listToSort.set(possibleIndex, temp);
+    }
+  }
   
   private void displayMovieInfo(Movie movie)
   {
@@ -173,25 +190,30 @@ public class MovieCollection
     // search through ALL movies in collection
     for (int i = 0; i < movies.size(); i++)
     {
-      String movieCasts = movies.get(i).getCast();
-
-      if (movieCasts.indexOf(searchTerm) != -1)
+      String actors = movies.get(i).getCast();
+      String[] actorList = actors.split("\\|");
+      for (String input : actorList)
       {
-        //add the cast objest to the results list
-        String actors = movies.get(i).getCast();
-        String[] actorList = actors.split("\\|");
-        for (String input : actorList)
+        String lower = input.toLowerCase();
+        if (lower.indexOf(searchTerm) != -1)
         {
-          if (input.equals(searchTerm))
-          {
-            results.add(input);
-          }
+          results.add(input);
         }
       }
     }
+    sortString(results);
 
-    // sort the results by title
-//    sortResults(results);
+    for (int i = 0; i < results.size(); i++)
+    {
+      for (int j = i + 1; j < results.size(); j++)
+      {
+        if (results.get(i).equals(results.get(j)))
+        {
+          results.remove(j);
+          j--;
+        }
+      }
+    }
 
     // now, display them all to the user
     for (int i = 0; i < results.size(); i++)
@@ -209,6 +231,40 @@ public class MovieCollection
 
     int choice = scanner.nextInt();
     scanner.nextLine();
+
+    String actor = results.get(choice - 1);
+    ArrayList<Movie> castMovies = new ArrayList<Movie>();
+    for (int i = 0; i < movies.size(); i++)
+    {
+      String casts = movies.get(i).getCast();
+      String[] actorList2 = casts.split("\\|");
+      for (String check : actorList2)
+      {
+        if (check.equals(actor)) {
+          castMovies.add(movies.get(i));
+        }
+      }
+    }
+    sortResults(castMovies);
+
+    for (int i = 0; i < castMovies.size(); i++)
+    {
+      Movie movies = castMovies.get(i);
+
+      // this will print index 0 as choice 1 in the results list; better for user!
+      int choiceNum = i + 1;
+
+      System.out.println("" + choiceNum + ". " + movies.getTitle());
+    }
+
+    System.out.println("Which movie would you like to learn more about?");
+    System.out.print("Enter number: ");
+    int choice2 = scanner.nextInt();
+    scanner.nextLine();
+
+    Movie selectedMovie = castMovies.get(choice2 - 1);
+
+    displayMovieInfo(selectedMovie);
 
     System.out.println("\n ** Press Enter to Return to Main Menu **");
     scanner.nextLine();
@@ -270,12 +326,112 @@ public class MovieCollection
   
   private void listGenres()
   {
-    /* TASK 5: IMPLEMENT ME! */
+    ArrayList<String> results = new ArrayList<String>();
+
+    // search through ALL movies in collection
+    for (int i = 0; i < movies.size(); i++)
+    {
+      String genre = movies.get(i).getGenres();
+      String[] genres = genre.split("\\|");
+      for (String input : genres)
+      {
+        results.add(input);
+      }
+    }
+    sortString(results);
+
+    for (int i = 0; i < results.size(); i++)
+    {
+      for (int j = i + 1; j < results.size(); j++)
+      {
+        if (results.get(i).equals(results.get(j)))
+        {
+          results.remove(j);
+          j--;
+        }
+      }
+    }
+    // now, display them all to the user
+    for (int i = 0; i < results.size(); i++)
+    {
+      String genre3 = results.get(i);
+
+      // this will print index 0 as choice 1 in the results list; better for user!
+      int choiceNum = i + 1;
+
+      System.out.println("" + choiceNum + ". " + genre3);
+    }
+
+
+    System.out.println("Which would you like to see all movies for?");
+    System.out.print("Enter number: ");
+
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+    String getGenre = results.get(choice - 1);
+    ArrayList<Movie> allMovies = new ArrayList<Movie>();
+
+    for (int i = 0; i < movies.size(); i++)
+    {
+      String genre2 = movies.get(i).getGenres();
+      if (genre2.indexOf(getGenre) != -1)
+      {
+        allMovies.add(movies.get(i));
+      }
+    }
+    sortResults(allMovies);
+
+    // now, display them all to the user
+    for (int i = 0; i < allMovies.size(); i++)
+    {
+      String title = allMovies.get(i).getTitle();
+
+      // this will print index 0 as choice 1 in the results list; better for user!
+      int choiceNum = i + 1;
+
+      System.out.println("" + choiceNum + ". " + title);
+    }
+
+    System.out.println("Which movie would you like to learn more about?");
+    System.out.print("Enter number: ");
+
+    int choice2 = scanner.nextInt();
+    scanner.nextLine();
+
+    Movie selectedMovie = allMovies.get(choice2 - 1);
+
+    displayMovieInfo(selectedMovie);
+
+    System.out.println("\n ** Press Enter to Return to Main Menu **");
+    scanner.nextLine();
   }
   
   private void listHighestRated()
   {
-    /* TASK 6: IMPLEMENT ME! */
+    ArrayList<Movie> results = new ArrayList<Movie>();
+
+    // search through ALL movies in collection
+    for (int i = 0; i < movies.size(); i++)
+    {
+      Double rating = movies.get(i).getUserRating();
+      if (results.size() >= 50)
+      {
+        for (int j = 0; j < results.size(); j++)
+        {
+          if (results.get(j).getUserRating() < rating)
+          {
+            results.set(i, movies.get(i));
+          }
+          i = movies.size();
+        }
+      }
+      else
+      {
+        results.add(movies.get(i));
+      }
+    }
+
+
   }
   
   private void listHighestRevenue()
