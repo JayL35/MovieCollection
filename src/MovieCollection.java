@@ -408,29 +408,65 @@ public class MovieCollection
   
   private void listHighestRated()
   {
-    ArrayList<Movie> results = new ArrayList<Movie>();
-
-    // search through ALL movies in collection
-    for (int i = 0; i < movies.size(); i++)
-    {
-      Double rating = movies.get(i).getUserRating();
-      if (results.size() >= 50)
-      {
-        for (int j = 0; j < results.size(); j++)
-        {
-          if (results.get(j).getUserRating() < rating)
-          {
-            results.set(i, movies.get(i));
-          }
-          i = movies.size();
-        }
-      }
-      else
-      {
-        results.add(movies.get(i));
-      }
-    }
-
+//    ArrayList<Movie> results = new ArrayList<Movie>();
+//
+//    // search through ALL movies in collection
+//    for (int i = 0; i < movies.size(); i++)
+//    {
+//      Double rating = movies.get(i).getUserRating();
+//      if (results.size() == 50)
+//      {
+//        for (int j = 0; j < results.size() - 1; j++)
+//        {
+//          if (results.get(j).getUserRating() < rating)
+//          {
+//            results.set(j, movies.get(i));
+//            results.remove(results.size() - 1);
+//          }
+//          j = results.size();
+//        }
+//      }
+//      else
+//      {
+//        for (int j = 0; j < results.size() - 1; j++)
+//        {
+//          if (results.get(j).getUserRating() < rating)
+//          {
+//            results.set(j, movies.get(i));
+//            j = results.size();
+//          }
+//          else
+//          {
+//            results.add(movies.get(i));
+//          }
+//        }
+//      }
+//    }
+//
+//    // now, display them all to the user
+//    for (int i = 0; i < results.size(); i++)
+//    {
+//      String movies = results.get(i).getTitle();
+//      Double ratings = results.get(i).getUserRating();
+//
+//      // this will print index 0 as choice 1 in the results list; better for user!
+//      int choiceNum = i + 1;
+//
+//      System.out.println("" + choiceNum + ". " + movies + ": " + ratings);
+//    }
+//
+//    System.out.println("Which movie would you like to learn more about?");
+//    System.out.print("Enter number: ");
+//
+//    int choice = scanner.nextInt();
+//    scanner.nextLine();
+//
+//    Movie selectedMovie = results.get(choice - 1);
+//
+//    displayMovieInfo(selectedMovie);
+//
+//    System.out.println("\n ** Press Enter to Return to Main Menu **");
+//    scanner.nextLine();
 
   }
   
